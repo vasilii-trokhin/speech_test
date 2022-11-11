@@ -41,8 +41,7 @@ exports.speechText = functions.https.onRequest(
         console.log(`Input encoding: ${inputEncoding}`);
         console.log(`Input sample rate hertz: ${inputSampleRateHertz}`);
         console.log(`Input language code: ${inputLanguageCode}`);
-  
-        // [START chain_cloud_calls]
+ 
         const [sttResponse] = await callSpeechToText(
           inputAudioContent,
           inputEncoding,
@@ -50,8 +49,6 @@ exports.speechText = functions.https.onRequest(
           inputLanguageCode
         );
   
-        // The data object contains one or more recognition
-        // alternatives ordered by accuracy.
         const transcription = sttResponse.results
           .map(result => result.alternatives[0].transcript)
           .join('\n');
