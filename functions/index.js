@@ -19,9 +19,6 @@ const functions = require('firebase-functions');
 const {SpeechClient} = require('@google-cloud/speech');
 const { initializeApp, applicationDefault, cert } = require('firebase-admin/app');
 const { getFirestore, Timestamp, FieldValue } = require('firebase-admin/firestore');
-const outputBucket = firebaseConfigured
-  ? functions.config().playchat.output_bucket
-  : process.env.OUTPUT_BUCKET;
 
 const speechToTextClient = new SpeechClient();
 initializeApp({
@@ -65,7 +62,6 @@ exports.speechText = functions.https.onRequest(
         const res = await db.collection('speeches').add(data);
         console.log('Added document with ID: ', res.id);
         responseBody.transcription = transcription;
-        responseBody.gcsBucket = outputBucket;
         console.log(`Response: ${JSON.stringify(responseBody)}`);
         response.status(200).send(responseBody);
       } catch (error) {
